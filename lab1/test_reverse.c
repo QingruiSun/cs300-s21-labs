@@ -118,7 +118,23 @@ void run_test(void (*func)(), const char* message) {
  * i.e. argv[1] --> number of elements, thus argc - 2 == atoi(argv[1])
  */
 int main(int argc, char** argv) {
+  if (argc == 1) {
+    printf("Testing for correctness...\n");
+	run_test(&test_reverse, "Reverse");
+  }
   int num_elements = atoi(argv[1]);
+
+  for (int i = 0; i < num_elements; ++i) {
+    if (argv[i + 2] == NULL) {
+	  printf("Arguments are less than expected.\n");
+	  return 1;
+	}
+  }
+
+  if (argv[num_elements + 2] != NULL) {
+    printf("Arguments are more than expected.\n");
+	return 1;
+  }
 
   char* arr[num_elements];
   for (int i = 0; i < num_elements; i++) {
