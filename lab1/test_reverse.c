@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include "reverse.h"
 
 static int total_tests = 0;
@@ -120,20 +121,20 @@ void run_test(void (*func)(), const char* message) {
 int main(int argc, char** argv) {
   if (argc == 1) {
     printf("Testing for correctness...\n");
-	run_test(&test_reverse, "Reverse");
+    run_test(&test_reverse, "Reverse");
   }
   int num_elements = atoi(argv[1]);
 
   for (int i = 0; i < num_elements; ++i) {
     if (argv[i + 2] == NULL) {
-	  printf("Arguments are less than expected.\n");
-	  return 1;
-	}
+      printf("Arguments are less than expected.\n");
+      return 1;
+    }
   }
 
   if (argv[num_elements + 2] != NULL) {
     printf("Arguments are more than expected.\n");
-	return 1;
+    return 1;
   }
 
   char* arr[num_elements];

@@ -18,7 +18,7 @@
  * will result in ["is", "name", "my", "hello"]
  */
 
-void swap(char** arr, int i, int j ) {
+void swap(char** arr, int i, int j) {
   char* temp = arr[i];
   arr[i] = arr[j];
   arr[j] = temp;
@@ -29,7 +29,7 @@ void reverse_arr(char** arr, int num) {
   int end = num - 1;
   while (start < end) {
     swap(arr, start, end);
-	start++;
-	end--;
+    start++;
+    end--;
   }
 }
