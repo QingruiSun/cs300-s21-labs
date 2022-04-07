@@ -122,6 +122,7 @@ int main(int argc, char** argv) {
   if (argc == 1) {
     printf("Testing for correctness...\n");
     run_test(&test_reverse, "Reverse");
+	return 0;
   }
   int num_elements = atoi(argv[1]);
 
