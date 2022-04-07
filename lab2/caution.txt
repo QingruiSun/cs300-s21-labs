@@ -1,0 +1,1 @@
+When copy a string to a new space, we should copy null terminator, otherwise new string doesn't have null terminator.
