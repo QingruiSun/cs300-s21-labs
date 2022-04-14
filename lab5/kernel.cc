@@ -83,8 +83,13 @@ void kernel(const char* command) {
         ptable[i].state = P_FREE;
     }
 
-    console_printf("WeensyOS has booted, but there are no processes running!\n");
-    while (true) {
+   // console_printf("WeensyOS has booted, but there are no processes running!\n");
+    process_setup(1, "allocator");
+	process_setup(2, "allocator2");
+	process_setup(3, "allocator3");
+	process_setup(4, "allocator4");
+	run(&ptable[1]);
+   	while (true) {
         check_keyboard();
     }
 }
