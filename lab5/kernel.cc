@@ -55,6 +55,21 @@ static void process_setup(pid_t pid, const char* program_name);
 void copy_mappings(x86_64_pagetable* dst, x86_64_pagetable* src);
 void compare_mappings(x86_64_pagetable* dst, x86_64_pagetable* src);
 
+void copy_mappings(x86_64_pagetable* dst, x86_64_pagetable* src) {
+  vmiter src_iter = vmiter(src, 0);
+  vmiter dst_iter = vmiter(dst, 0);
+  while (src_iter.va() + PAGESIZE < MEMSIZE_VIRTUAL) {
+    log_printf("VA %p maps to PA %p with PERMS %p, %p, %p\n", src_iter.va(), src_iter.pa(), src_iter.present(), src_iter.writable(), src_iter.user());
+	int perm = 0;
+	perm = perm | ((1 & src_iter.present()) << PTE_P);
+    perm = perm | ((1 & src_iter.writable()) << PTE_W);
+	perm = perm | ((1 & src_iter.user()) << PTE_U);
+    dst_iter.map(src_iter.pa(), perm);
+	src_iter += PAGESIZE;
+	dst_iter += PAGESIZE;
+  }
+}
+
 void kernel(const char* command) {
     // Initialize hardware.
     init_hardware();
@@ -76,6 +91,8 @@ void kernel(const char* command) {
             it.map(it.va(), 0);
         }
     }
+
+	copy_mappings(kernel_pagetable_copy, kernel_pagetable);
 
     // Set up process descriptors.
     for (pid_t i = 0; i < NPROC; i++) {
