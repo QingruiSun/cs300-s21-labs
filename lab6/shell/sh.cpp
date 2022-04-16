@@ -33,6 +33,18 @@ int num_tokens(char* input_buf, string delim) {
   return tokens;
 }
 
+void parse_path(char* src, char* dest) {
+  size_t len = strlen(src);
+  int start_index = len - 1;
+  while (start_index >= 0) {
+    if (src[start_index] == '/') {
+	  break;
+	}
+	start_index--;
+  }
+  memcpy(dest, src + start_index + 1, len - start_index);
+}
+
 /* TODO
  * Fill in this function to execute the not builtin commands (everything other
  * than cd, ln, rm, exit)
@@ -49,6 +61,21 @@ void do_fork(char* args[]) {
    * 1) fork into a child process to execute the function
    * 2) Outside of the child process, wait for the new process to finish
    */
+  int pid;
+  if ((pid = fork()) == 0) {
+    int args_length = 0;
+	while (args[args_length] != NULL) {
+	  args_length++;
+	}
+    char path[256];
+	memcpy(path, args[0], strlen(args[0]) + 1);
+	parse_path(path, args[0]); 
+    execv(path, args);
+	perror("execv");
+	exit(1);
+  } else {
+    waitpid(pid, NULL, 0);
+  }
 }
 
 /*
