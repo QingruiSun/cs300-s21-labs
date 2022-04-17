@@ -26,12 +26,23 @@ int run_workers(vector<wordindex>& files, vector<string> filenames,
   // 1) create a new index object for the file being processes by the thread and
   //    add it to the files vector
   // 2) create the thread to run find_word with the proper arguments
-
+  std::thread thread_array[num_threads];
+  wordindex wordindex_array[num_threads];
+  for (int i = 0; i < num_threads; ++i) {
+	wordindex_array[i].filename = filenames[start_pos + i];
+	thread_array[i] = thread(find_word, &wordindex_array[i], word);
+  } 
+  int occurrence = 0;
+  for (int i = 0; i < num_threads; ++i) {
+    thread_array[i].join();
+	files.push_back(wordindex_array[i]);
+	occurrence += wordindex_array[i].count;
+  }
   // join with each thread and add the count field of each index to the total
   // sum
 
   // return the total sum for this batch of files
-  return 0;
+  return occurrence;
 }
 
 /* The main REPL for the program
