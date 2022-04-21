@@ -64,7 +64,7 @@ void TodoClient::PrintTodos() {
   Empty request;
   TodoList response;
   ClientContext ctx;
-  Status resp_code = this->stub->GetTodos(&ctx, request, &response);
+  Status resp_code = this->stub->GetTodo(&ctx, request, &response);
 
   if (resp_code.ok()) {
     int num_items = response.items_size();
@@ -81,7 +81,9 @@ void TodoClient::PrintTodos() {
     // where i is the index in the list,
     // title is the item's title, and
     // status is the item's status.
-    //
+    for (int i = 0; i < num_items; ++i) {
+      printf("Item <%d>: <%s> with status <%s>\n", i, response.items(i).title().c_str(), protos::TodoStatus_Name(response.items(i).status()).c_str());
+    }
     // (Hint: for converting the TodoStatus enum to a string, use
     //  protos::TodoStatus_Name)
   } else {

@@ -13,7 +13,16 @@
   //    success = false
   // 2) otherwise add the item this server's map of Todos and set the
   //    response's success = true
-
+  if (request->status() == ::protos::TodoStatus::COMPLETED) {
+    response->set_success(false);
+    return ::grpc::Status::OK;
+  }
+  if (todos.count(request->title())) {
+    response->set_success(false);
+    return ::grpc::Status::OK;
+  }
+  todos[request->title()] = request->status();
+  response->set_success(true);
   return ::grpc::Status::OK;
 }
 
@@ -27,11 +36,20 @@
   //    If the status is updated to COMPLETED, then delete the item from
   //    the server's map of Todos.
   // 2) if the item doesn't exist, then set success = false
-
+  if (todos.count(request->title())) {
+    if (request->status() == ::protos::TodoStatus::COMPLETED) {
+      todos.erase(request->title());
+    } else {
+      todos[request->title()] = request->status();
+    }
+    response->set_success(true);
+  } else {
+    response->set_success(false);
+  }
   return ::grpc::Status::OK;
 }
 
-::grpc::Status TodoServerImpl::GetTodos(::grpc::ServerContext* context,
+::grpc::Status TodoServerImpl::GetTodo(::grpc::ServerContext* context,
                                         const ::protos::Empty* request,
                                         ::protos::TodoList* response) {
   // copies internal map of todos

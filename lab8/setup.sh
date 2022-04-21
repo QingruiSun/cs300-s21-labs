@@ -23,9 +23,9 @@ setup_grpc_deps () {
 }
 
 # some missing threads packages apparently
-setup_threads () {
-    sudo apt -y install libboost-tools-dev libboost-thread1.62-dev magics++
-}
+#setup_threads () {
+#    sudo apt -y install libboost-tools-dev libboost-thread1.62-dev magics++
+#}
 
 # helper to install c-ares
 install_cares () {
@@ -57,4 +57,4 @@ install_grpc () {
 
 }
 
-setup_grpc_deps && setup_threads && install_cmake && install_go && install_zlib && install_openssl && install_grpc
+setup_grpc_deps && install_cmake && install_go && install_zlib && install_openssl && install_grpc

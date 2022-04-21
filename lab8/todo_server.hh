@@ -24,7 +24,7 @@ class TodoServerImpl final : public TodoManager::Service {
   Status EditTodo(ServerContext* context, const TodoItem* request,
                   TodoResponse* response);
 
-  Status GetTodos(ServerContext* context, const Empty* request,
+  Status GetTodo(ServerContext* context, const Empty* request,
                   TodoList* response);
 };
 

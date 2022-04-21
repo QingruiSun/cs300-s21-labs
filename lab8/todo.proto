@@ -3,16 +3,31 @@ package protos;
 
 // TODO: create an enum named TodoStatus
 // with values NOT_STARTED, IN_PROGRESS, and COMPLETED
+enum TodoStatus {
+  NOT_STARTED = 0;
+  IN_PROGRESS = 1;
+  COMPLETED = 2;
+}
 
 // TODO: create a message named TodoItem
 // with a string 'title' field and a TodoStatus 'status' field
+message TodoItem {
+  string title = 1;
+  TodoStatus status = 2;
+}
 
 // TODO: create a message named TodoList
 // with one field named "items" that is a repeated field of
 // zero or more TodoItems
+message TodoList {
+  repeated TodoItem items = 3;
+}
 
 // TODO: create a TodoResponse message
 // with a boolean 'success' field
+message TodoResponse {
+  bool success = 1;
+}
 
 message Empty {}
 
@@ -21,3 +36,8 @@ message Empty {}
 // - EditTodo: takes a TodoItem and returns a TodoResponse
 // - GetTodo: takes an Empty message and returns a TodoList
 
+service TodoManager {
+  rpc AddTodo(TodoItem) returns (TodoResponse) {}
+  rpc EditTodo(TodoItem) returns (TodoResponse) {}
+  rpc GetTodo(Empty) returns (TodoList) {}
+}
